@@ -1,13 +1,11 @@
 package com.advpro.profiling.tutorial.service;
 
 import com.advpro.profiling.tutorial.model.Student;
-import com.advpro.profiling.tutorial.model.StudentCourse;
 import com.advpro.profiling.tutorial.repository.StudentCourseRepository;
 import com.advpro.profiling.tutorial.repository.StudentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,49 +13,50 @@ import java.util.Optional;
  * @author muhammad.khadafi
  */
 @Service
+@Transactional(readOnly = true)
 public class StudentService {
 
-    @Autowired
-    private StudentRepository studentRepository;
+    private final StudentRepository studentRepository;
+    private final StudentCourseRepository studentCourseRepository;
 
-    @Autowired
-    private StudentCourseRepository studentCourseRepository;
+    public StudentService(StudentRepository studentRepository,
+                          StudentCourseRepository studentCourseRepository) {
+        this.studentRepository = studentRepository;
+        this.studentCourseRepository = studentCourseRepository;
+    }
 
-    public List<StudentCourse> getAllStudentsWithCourses() {
-        List<Student> students = studentRepository.findAll();
-        List<StudentCourse> studentCourses = new ArrayList<>();
-        for (Student student : students) {
-            List<StudentCourse> studentCoursesByStudent = studentCourseRepository.findByStudentId(student.getId());
-            for (StudentCourse studentCourseByStudent : studentCoursesByStudent) {
-                StudentCourse studentCourse = new StudentCourse();
-                studentCourse.setStudent(student);
-                studentCourse.setCourse(studentCourseByStudent.getCourse());
-                studentCourses.add(studentCourse);
+    public String getAllStudentsWithCourses() {
+        List<StudentCourseRepository.StudentCourseSummary> rows =
+                studentCourseRepository.findAllStudentCourseSummaries();
+
+        StringBuilder result = new StringBuilder(Math.max(16, rows.size() * 48));
+        result.append("[");
+
+        for (int i = 0; i < rows.size(); i++) {
+            StudentCourseRepository.StudentCourseSummary row = rows.get(i);
+
+            result.append("StudentCourse{")
+                    .append(", student=")
+                    .append(row.getStudentName())
+                    .append(", course=")
+                    .append(row.getCourseName())
+                    .append("}")
+                    .append("\n");
+
+            if (i < rows.size() - 1) {
+                result.append(", ");
             }
         }
-        return studentCourses;
+
+        result.append("]");
+        return result.toString();
     }
 
     public Optional<Student> findStudentWithHighestGpa() {
-        List<Student> students = studentRepository.findAll();
-        Student highestGpaStudent = null;
-        double highestGpa = 0.0;
-        for (Student student : students) {
-            if (student.getGpa() > highestGpa) {
-                highestGpa = student.getGpa();
-                highestGpaStudent = student;
-            }
-        }
-        return Optional.ofNullable(highestGpaStudent);
+        return studentRepository.findTopByOrderByGpaDesc();
     }
 
     public String joinStudentNames() {
-        List<Student> students = studentRepository.findAll();
-        String result = "";
-        for (Student student : students) {
-            result += student.getName() + ", ";
-        }
-        return result.substring(0, result.length() - 2);
+        return studentRepository.findAllStudentNamesJoined();
     }
 }
-
