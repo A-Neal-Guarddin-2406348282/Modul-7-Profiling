@@ -25,6 +25,8 @@ public class StudentService {
         this.studentCourseRepository = studentCourseRepository;
     }
 
+    // Hasil refactor all-student sehingga meningkatkan kecepatan respons dan aplikasi jadi lebih ringan
+    // Menggunakan JMeter dan IntelliJ Profiler
     public String getAllStudentsWithCourses() {
         List<StudentCourseRepository.StudentCourseSummary> rows =
                 studentCourseRepository.findAllStudentCourseSummaries();
@@ -52,10 +54,12 @@ public class StudentService {
         return result.toString();
     }
 
+    // Hasil fungsi highest GPA refactor sehingga meningkatkan kecepatan respons dan aplikasi jadi lebih ringan
     public Optional<Student> findStudentWithHighestGpa() {
         return studentRepository.findTopByOrderByGpaDesc();
     }
 
+    // Hasil refactor all-student-name sehingga meningkatkan kecepatan respons dan aplikasi jadi lebih ringan
     public String joinStudentNames() {
         return studentRepository.findAllStudentNamesJoined();
     }
