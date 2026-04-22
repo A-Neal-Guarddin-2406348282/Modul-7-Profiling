@@ -27,7 +27,7 @@ Modul 7 Profiling
 
 ## Kesimpulan
 
-Berdasarkan hasil profiling pada tampilan **CPU Time**, ketiga endpoint yang dioptimasi berhasil memperoleh peningkatan performa yang melampaui target minimum **20%**.
+Berdasarkan hasil profiling pada tampilan **CPU Time**, ketiga endpoint yang dioptimasi berhasil memperoleh peningkatan performa yang jauh melampaui target minimum **20%**.
 
 ### Hasil CPU Time
 
@@ -35,7 +35,7 @@ Berdasarkan hasil profiling pada tampilan **CPU Time**, ketiga endpoint yang dio
 - Pada endpoint `/all-student-name`, CPU time method `joinStudentNames()` turun dari **1.811 ms** sebelum refactor menjadi **60 ms** setelah refactor. Ini setara dengan peningkatan sekitar **96,69%**.
 - Pada endpoint `/highest-gpa`, CPU time method `findStudentWithHighestGpa()` turun dari **460 ms** menjadi **70 ms**. Ini setara dengan peningkatan sekitar **84,78%**.
 
-Dengan demikian, seluruh endpoint yang diminta, yaitu `/all-student`, `/all-student-name`, dan `/highest-gpa`, telah memenuhi bahkan melampaui requirement optimisasi yang diberikan.
+Dengan demikian, ketiga endpoint telah memenuhi bahkan melampaui requirement optimisasi yang diminta.
 
 ### Hasil JMeter
 
@@ -43,7 +43,6 @@ Hasil pengujian menggunakan **JMeter** juga mengonfirmasi bahwa refactor yang di
 
 - Pada endpoint `/highest-gpa`, rata-rata **Sample Time** turun dari sekitar **917,2 ms** pada pengujian awal menjadi sekitar **11,3 ms** setelah optimisasi.
 - Pada endpoint `/all-student-name`, setelah optimisasi diperoleh rata-rata **Sample Time** sebesar **45 ms**, yang konsisten dengan penurunan CPU time pada profiler.
-- Pada endpoint `/all-student`, hasil pengujian ulang juga menunjukkan adanya perbaikan performa setelah refactor. Hal ini sejalan dengan penurunan CPU time yang cukup besar pada profiler, sehingga optimisasi tidak hanya memperbaiki proses internal aplikasi, tetapi juga membantu meningkatkan respons endpoint saat diuji.
 
 Secara keseluruhan, refactor yang dilakukan berhasil menurunkan biaya pemrosesan, meningkatkan kecepatan respons, dan **membuat aplikasi lebih ringan** untuk ketiga endpoint tersebut.
 
