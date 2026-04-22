@@ -59,7 +59,8 @@ public class StudentService {
         return studentRepository.findTopByOrderByGpaDesc();
     }
 
-    // Hasil refactor all-student-name sehingga meningkatkan kecepatan respons dan aplikasi jadi lebih ringan
+    // Hasil refactor all-student-name sehingga meningkatkan kecepatan respons dan aplikasi jadi lebih ringan.
+    // Serta semua penjelasan di README.md
     public String joinStudentNames() {
         return studentRepository.findAllStudentNamesJoined();
     }
