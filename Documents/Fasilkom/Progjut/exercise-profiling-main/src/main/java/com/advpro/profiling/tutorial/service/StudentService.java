@@ -6,7 +6,6 @@ import com.advpro.profiling.tutorial.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -25,42 +24,14 @@ public class StudentService {
         this.studentCourseRepository = studentCourseRepository;
     }
 
-    // Hasil refactor all-student sehingga meningkatkan kecepatan respons dan aplikasi jadi lebih ringan
-    // Menggunakan JMeter dan IntelliJ Profiler
     public String getAllStudentsWithCourses() {
-        List<StudentCourseRepository.StudentCourseSummary> rows =
-                studentCourseRepository.findAllStudentCourseSummaries();
-
-        StringBuilder result = new StringBuilder(Math.max(16, rows.size() * 48));
-        result.append("[");
-
-        for (int i = 0; i < rows.size(); i++) {
-            StudentCourseRepository.StudentCourseSummary row = rows.get(i);
-
-            result.append("StudentCourse{")
-                    .append(", student=")
-                    .append(row.getStudentName())
-                    .append(", course=")
-                    .append(row.getCourseName())
-                    .append("}")
-                    .append("\n");
-
-            if (i < rows.size() - 1) {
-                result.append(", ");
-            }
-        }
-
-        result.append("]");
-        return result.toString();
+        return studentCourseRepository.findAllStudentsWithCoursesAsString();
     }
 
-    // Hasil fungsi highest GPA refactor sehingga meningkatkan kecepatan respons dan aplikasi jadi lebih ringan
     public Optional<Student> findStudentWithHighestGpa() {
         return studentRepository.findTopByOrderByGpaDesc();
     }
 
-    // Hasil refactor all-student-name sehingga meningkatkan kecepatan respons dan aplikasi jadi lebih ringan.
-    // Serta semua penjelasan di README.md
     public String joinStudentNames() {
         return studentRepository.findAllStudentNamesJoined();
     }
